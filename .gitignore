@@ -10,3 +10,10 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+.idea/
+.git/
+
+
+# 项目的相关的文件补提交
+env.conf
