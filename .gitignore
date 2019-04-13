@@ -14,6 +14,7 @@
 .idea/
 .git/
 
-
 # 项目的相关的文件补提交
-env.conf
+conf/env.conf
+
+

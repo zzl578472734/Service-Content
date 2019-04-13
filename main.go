@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "Service-Content/initial"
 	_ "Service-Content/routers"
 	"github.com/astaxie/beego"
 )
@@ -8,4 +9,3 @@ import (
 func main() {
 	beego.Run()
 }
-
