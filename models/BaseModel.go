@@ -1,11 +1,11 @@
 package models
 
 import (
+	"Service-Content/constants"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
-	_"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type BaseModel struct {
@@ -33,9 +33,32 @@ func InitDB() {
 	err := orm.RegisterDriver(databaseDriver, orm.DRMySQL)
 	err = orm.RegisterDataBase("default", databaseDriver, dataSource)
 	if err != nil {
-		logs.Info(err)
 		return
 	}
 
-	orm.RegisterModel(new(UserModel))
+	orm.RegisterModel(
+		new(UserModel),
+	)
+
+	// 判断是否是生产环境，打印对应的sql
+	runMode := beego.AppConfig.String("runmode")
+	if runMode != beego.PROD{
+		orm.Debug = true
+	}
+}
+
+func TableName(tableName string) string{
+	databasePrefix := beego.AppConfig.DefaultString("database.prefix", "")
+	if databasePrefix != constants.DefaultEmptyString{
+		trueTableName := fmt.Sprintf("%s%s", databasePrefix, tableName)
+		return trueTableName
+	}
+	return tableName
+}
+
+func OrmErr(err error) error {
+	if err != orm.ErrNoRows {
+		return err
+	}
+	return nil
 }

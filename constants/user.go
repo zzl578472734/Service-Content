@@ -1,7 +1,7 @@
 package constants
 
 const (
-	UserTableName = "users"
+	UserTableName = "user"
 
 	UserStatusActive = 1
 	UserStatusError = 2
