@@ -49,7 +49,7 @@ func InitDB() {
 
 func TableName(tableName string) string{
 	databasePrefix := beego.AppConfig.DefaultString("database.prefix", "")
-	if databasePrefix != constants.DefaultEmptyString{
+	if len(databasePrefix) > constants.DefaultZero{
 		trueTableName := fmt.Sprintf("%s%s", databasePrefix, tableName)
 		return trueTableName
 	}

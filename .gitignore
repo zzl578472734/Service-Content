@@ -16,5 +16,6 @@
 
 # 项目的相关的文件补提交
 conf/env.conf
+/runtime/logs/*
 
 

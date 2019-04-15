@@ -5,6 +5,6 @@ const (
 	DefaultEmptyString = ""
 
 	DefaultApiSuccessCode = 0
-
-	DefaultErrorTemplate = ""
+	DefaultLayout = "2016-01-02 15:04:05"
+	DefaultErrorTemplate = "%v: %v error, detail: %v"
 )

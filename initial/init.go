@@ -1,9 +1,8 @@
 package initial
 
-import (
-	"Service-Content/models"
-)
+import "Service-Content/models"
 
 func init()  {
 	models.InitDB()
+	InitLog()
 }

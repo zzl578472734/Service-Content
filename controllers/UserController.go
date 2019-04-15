@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"Service-Content/errors"
-	"Service-Content/models"
 	"Service-Content/services"
+	"Service-Content/models"
+	"github.com/astaxie/beego/logs"
 )
 
 type UserController struct {
@@ -11,10 +12,9 @@ type UserController struct {
 }
 
 func (c *UserController)Detail()  {
-
 	id, err := c.GetInt64("id")
 	if err != nil{
-		c.ApiErrorReturn(errors.ErrQueryError)
+		c.ApiErrorReturn(errors.ErrParam)
 		return
 	}
 
@@ -32,6 +32,7 @@ func (c *UserController)Detail()  {
 func (c *UserController)Insert()  {
 	user := new(models.UserModel)
 	if err := c.ParseForm(user); err != nil{
+		logs.Info(err)
 		c.ApiErrorReturn(errors.ErrParam)
 		return
 	}
