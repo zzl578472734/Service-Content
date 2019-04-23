@@ -8,3 +8,7 @@ type DefaultListParam struct {
 type DefaultQueryParam struct {
 	Id int64 `json:"id"`
 }
+
+type DefaultStatusParam struct {
+	Status int8 `json:"status"`
+}

@@ -1,0 +1,9 @@
+[dev]
+database.driver =
+database.host =
+database.db =
+database.port =
+database.user =
+database.password =
+database.prefix =
+database.charset =

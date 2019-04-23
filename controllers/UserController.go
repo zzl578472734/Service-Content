@@ -2,9 +2,8 @@ package controllers
 
 import (
 	"Service-Content/errors"
-	"Service-Content/services"
 	"Service-Content/models"
-	"github.com/astaxie/beego/logs"
+	"Service-Content/services"
 	"Service-Content/vars"
 )
 
@@ -12,17 +11,16 @@ type UserController struct {
 	BaseController
 }
 
-func (c *UserController)Detail()  {
-	param := c.GetRequestParam()
-
-	data,_ := param.(*vars.DefaultQueryParam)
-	logs.Info(data)
-
-	logs.Info(data.Id)
+func (c *UserController) Detail() {
+	data, err := c.GetRequestParam().(*vars.DefaultQueryParam)
+	if !err {
+		c.ApiErrorReturn(errors.ErrParam)
+		return
+	}
 
 	s := services.NewUserService(c.Ctx)
-	user,errMsg := s.Detail(data.Id)
-	if errMsg != nil{
+	user, errMsg := s.Detail(data.Id)
+	if errMsg != nil {
 		c.ApiErrorReturn(errMsg)
 		return
 	}
@@ -31,17 +29,16 @@ func (c *UserController)Detail()  {
 	return
 }
 
-func (c *UserController)Insert()  {
+func (c *UserController) Insert() {
 	user := new(models.UserModel)
-	if err := c.ParseForm(user); err != nil{
-		logs.Info(err)
+	if err := c.ParseForm(user); err != nil {
 		c.ApiErrorReturn(errors.ErrParam)
 		return
 	}
 
 	s := services.NewUserService(c.Ctx)
-	id,errMsg := s.Insert(user)
-	if errMsg != nil{
+	id, errMsg := s.Insert(user)
+	if errMsg != nil {
 		c.ApiErrorReturn(errMsg)
 		return
 	}

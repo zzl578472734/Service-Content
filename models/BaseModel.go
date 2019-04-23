@@ -61,7 +61,7 @@ func TableName(tableName string) string {
 	return tableName
 }
 
-func OrmErr(err error) error {
+func ormErr(err error) error {
 	if err != orm.ErrNoRows {
 		return err
 	}

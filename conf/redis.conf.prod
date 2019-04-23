@@ -1,0 +1,10 @@
+redisDialTimeout = 3
+redisReadTimeout = 1
+
+[dev]
+# redis的模式 0：单机模式  1：哨兵模式   2：集群模式
+redisMode =
+redis.host =
+redis.port =
+redis.database =
+redis.password =

@@ -17,7 +17,7 @@ type ApiResponse struct {
 type ApiRequestParam struct {
 	UserId     int64       `json:"user_id"`
 	AppId      string      `json:"app_id"`
-	AppSecret  string      `json:"app_secret"`
+	AppToken   string      `json:"app_token"`
 	Nonce      string      `json:"nonce"`
 	Timestamps int64       `json:"timestamps"`
 	Param      interface{} `json:"param"`
@@ -57,6 +57,7 @@ func (c *BaseController) Prepare() {
 
 func (c *BaseController) getRequestBodyParam() {
 	request := new(ApiRequestParam)
+	request.Param = getApiRequestAdapter(c)
 
 	body := c.Ctx.Input.RequestBody
 

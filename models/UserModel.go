@@ -30,7 +30,7 @@ func (m *UserModel) GetById(id int64) (*UserModel, error) {
 
 	user := new(UserModel)
 
-	if err := query.Filter("id", id).One(user); OrmErr(err) != nil {
+	if err := query.Filter("id", id).One(user); ormErr(err) != nil {
 		logs.Error(constants.DefaultErrorTemplate, "UserModel.GetById", "One", err)
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (m *UserModel) GetById(id int64) (*UserModel, error) {
 
 func (m *UserModel) Insert(user *UserModel) (int64, error) {
 	id, err := m.O.Insert(user)
-	if OrmErr(err) != nil {
+	if ormErr(err) != nil {
 		logs.Error(constants.DefaultErrorTemplate, "UserModel.Insert", "Insert", err)
 		return constants.DefaultZero, err
 	}

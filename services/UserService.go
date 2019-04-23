@@ -13,7 +13,7 @@ import (
 type UserService struct {
 	BaseService
 	ctx *context.Context
-	m   *models.UserModel
+	model   *models.UserModel
 }
 
 var (
@@ -24,7 +24,7 @@ var (
 )
 
 func NewUserService(ctx *context.Context) *UserService {
-	return &UserService{ctx: ctx, m: models.NewUserModel()}
+	return &UserService{ctx: ctx, model: models.NewUserModel()}
 }
 
 func (s *UserService) Detail(id int64) (*models.UserModel, *errors.ErrMsg) {
@@ -34,12 +34,12 @@ func (s *UserService) Detail(id int64) (*models.UserModel, *errors.ErrMsg) {
 
 	user := new(models.UserModel)
 	key := fmt.Sprintf("%s%d",constants.UserDetailCacheKey, id)
-	err := s.m.GetCache(key, user)
+	err := s.model.GetCache(key, user)
 	if err == nil && user.Id > constants.DefaultZero{
 		return user,nil
 	}
 
-	user, err = s.m.GetById(id)
+	user, err = s.model.GetById(id)
 	if err != nil {
 		return nil, errors.ErrQueryError
 	}
@@ -48,7 +48,7 @@ func (s *UserService) Detail(id int64) (*models.UserModel, *errors.ErrMsg) {
 		return nil, errors.ErrQueryRecordNotExists
 	}
 
-	s.m.SetCache(key, user)
+	s.model.SetCache(key, user)
 
 	return user, nil
 }
@@ -91,7 +91,7 @@ func (s *UserService) defaultInsert(user *models.UserModel) (int64, *errors.ErrM
 	// 添加默认字段
 	s.defaultField(user)
 
-	id, err := s.m.Insert(user)
+	id, err := s.model.Insert(user)
 	if err != nil{
 		return constants.DefaultZero, errors.ErrInsertError
 	}

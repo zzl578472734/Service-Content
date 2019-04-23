@@ -13,15 +13,19 @@ var (
 	}
 )
 
-func getApiRequestAdapter(c *BaseController) {
+func getApiRequestAdapter(c *BaseController) interface{}{
 	controllerName, actionName := c.GetControllerAndAction()
 
 	completeAdapter := fmt.Sprintf("%s/%s", controllerName, actionName)
 
 	adapter, exists := apiRequestAdapter[completeAdapter]
 	if exists {
-		adapter()
+		return adapter()
 	}
+
+	// 使用map处理
+
+	return adapter()
 }
 
 func DefaultQueryParamAdapter() interface{} {
