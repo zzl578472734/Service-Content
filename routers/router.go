@@ -14,7 +14,7 @@ func init() {
 func InitUserRouter() {
 
 	ns := beego.NewNamespace("/user",
-		beego.NSRouter("/detail", new(controllers.UserController), "post:Detail"),
+		beego.NSRouter("/detail", new(controllers.UserController), "*:Detail"),
 		beego.NSRouter("/insert", new(controllers.UserController), "post:Insert"),
 	)
 

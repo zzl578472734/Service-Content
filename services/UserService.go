@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"Service-Content/utils"
 	"time"
+	"fmt"
 )
 
 type UserService struct {
@@ -31,7 +32,14 @@ func (s *UserService) Detail(id int64) (*models.UserModel, *errors.ErrMsg) {
 		return nil, errors.ErrParam
 	}
 
-	user, err := s.m.GetById(id)
+	user := new(models.UserModel)
+	key := fmt.Sprintf("%s%d",constants.UserDetailCacheKey, id)
+	err := s.m.GetCache(key, user)
+	if err == nil && user.Id > constants.DefaultZero{
+		return user,nil
+	}
+
+	user, err = s.m.GetById(id)
 	if err != nil {
 		return nil, errors.ErrQueryError
 	}
@@ -39,6 +47,9 @@ func (s *UserService) Detail(id int64) (*models.UserModel, *errors.ErrMsg) {
 	if user == nil || user.Status != constants.UserStatusActive {
 		return nil, errors.ErrQueryRecordNotExists
 	}
+
+	s.m.SetCache(key, user)
+
 	return user, nil
 }
 

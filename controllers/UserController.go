@@ -5,6 +5,7 @@ import (
 	"Service-Content/services"
 	"Service-Content/models"
 	"github.com/astaxie/beego/logs"
+	"Service-Content/vars"
 )
 
 type UserController struct {
@@ -12,14 +13,15 @@ type UserController struct {
 }
 
 func (c *UserController)Detail()  {
-	id, err := c.GetInt64("id")
-	if err != nil{
-		c.ApiErrorReturn(errors.ErrParam)
-		return
-	}
+	param := c.GetRequestParam()
+
+	data,_ := param.(*vars.DefaultQueryParam)
+	logs.Info(data)
+
+	logs.Info(data.Id)
 
 	s := services.NewUserService(c.Ctx)
-	user,errMsg := s.Detail(id)
+	user,errMsg := s.Detail(data.Id)
 	if errMsg != nil{
 		c.ApiErrorReturn(errMsg)
 		return
@@ -48,8 +50,4 @@ func (c *UserController)Insert()  {
 	}
 	c.ApiSuccessReturn(data)
 	return
-}
-
-func (c *UserController)Update()  {
-
 }
