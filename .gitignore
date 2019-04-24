@@ -16,8 +16,8 @@
 
 # 项目的相关的文件补提交
 conf/env.conf
-conf/database.conf
 conf/redis.conf
+conf/database.conf
 /runtime/logs/*
 
 
