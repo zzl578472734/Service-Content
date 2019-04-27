@@ -1,0 +1,5 @@
+package redisclient
+
+func InitCluster()  {
+	
+}

@@ -8,13 +8,14 @@ import (
 func init() {
 
 	// 用户模块
-	InitUserRouter()
+	initUserRouter()
 }
 
-func InitUserRouter() {
+func initUserRouter() {
 
 	ns := beego.NewNamespace("/user",
-		beego.NSRouter("/detail", new(controllers.UserController), "*:Detail"),
+		beego.NSRouter("/login", new(controllers.UserController), "post:Login"),
+		beego.NSRouter("/search", new(controllers.UserController), "post:Search"),
 		beego.NSRouter("/insert", new(controllers.UserController), "post:Insert"),
 	)
 

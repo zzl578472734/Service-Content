@@ -16,7 +16,9 @@ import (
 var (
 	allowController = map[string][]funcFilter{
 		"UserController/*": {AppAuth},
+		"UserController/Insert": emptyFilterFuncSlice,
 	}
+	emptyFilterFuncSlice   []funcFilter = nil
 	platformConf, accessConf, permissionConf config.Configer
 )
 
@@ -50,19 +52,15 @@ func filterPrepare(c *BaseController) {
 	completePath := fmt.Sprintf("%s/%s", controllerName, actionName)
 
 	filters, exists := allowController[completePath]
+
 	switch exists {
 	case false:
 		completePath = fmt.Sprintf("%s/*", controllerName)
 		filters, exists = allowController[completePath]
 		if !exists {
 			logs.Error(constants.DefaultErrorTemplate, "filter.filterPrepare", "allowController", errors.ErrAllowController)
-			return
+			filters = emptyFilterFuncSlice
 		}
-	}
-
-	if len(filters) <= constants.DefaultZero {
-		logs.Error(constants.DefaultErrorTemplate, "filter.filterPrepare", "allowController", errors.ErrAllowController)
-		return
 	}
 
 	c.getRequestBodyParam()

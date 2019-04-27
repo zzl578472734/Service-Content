@@ -1,5 +1,8 @@
 {
-  "UserController/Detail" : 100001,
-  "UserController/Insert" : 100002
+  "UserController/DoLogin" : 100001,
+  "UserController/Detail" : 100002,
+  "UserController/Search" : 100003,
+  "UserController/Insert" : 100004,
+  "UserController/Login" : 100005
 
 }

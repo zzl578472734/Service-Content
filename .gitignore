@@ -18,6 +18,8 @@
 conf/env.conf
 conf/redis.conf
 conf/database.conf
+conf/search.conf
+conf/wechat.conf
 /runtime/logs/*
 
 

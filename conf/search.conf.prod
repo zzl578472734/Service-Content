@@ -1,0 +1,10 @@
+[dev]
+elastic.host =
+elastic.port =
+
+[test]
+
+[pre]
+
+
+[prod]

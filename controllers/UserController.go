@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"Service-Content/errors"
-	"Service-Content/models"
 	"Service-Content/services"
 	"Service-Content/vars"
 )
@@ -29,15 +28,33 @@ func (c *UserController) Detail() {
 	return
 }
 
+func (c *UserController) Login() {
+	param, err := c.GetRequestParam().(*vars.UserLoginParam)
+
+	if !err {
+		c.ApiErrorReturn(errors.ErrParam)
+		return
+	}
+
+	service := services.NewUserService(c.Ctx)
+	user, errMsg := service.Login(param)
+	if errMsg != nil {
+		c.ApiErrorReturn(errMsg)
+		return
+	}
+	c.ApiSuccessReturn(user)
+	return
+}
+
 func (c *UserController) Insert() {
-	user := new(models.UserModel)
-	if err := c.ParseForm(user); err != nil {
+	param, err := c.GetRequestParam().(*vars.UserInsertParam)
+	if !err {
 		c.ApiErrorReturn(errors.ErrParam)
 		return
 	}
 
 	s := services.NewUserService(c.Ctx)
-	id, errMsg := s.Insert(user)
+	id, errMsg := s.Insert(param)
 	if errMsg != nil {
 		c.ApiErrorReturn(errMsg)
 		return
@@ -47,4 +64,15 @@ func (c *UserController) Insert() {
 	}
 	c.ApiSuccessReturn(data)
 	return
+}
+
+func (c *UserController) Search() {
+	param, err := c.GetRequestParam().(*vars.UserSearchParam)
+	if !err {
+		c.ApiErrorReturn(errors.ErrParam)
+		return
+	}
+
+	service := services.NewUserService(c.Ctx)
+	service.Search(param)
 }
