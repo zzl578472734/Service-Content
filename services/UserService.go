@@ -57,7 +57,7 @@ func (s *UserService) Login(param *vars.UserLoginParam) (*models.UserModel, *err
 	timeFormat := utils.TimeFormat(time.Now())
 	updateParam := orm.Params{
 		"last_login_time": timeFormat,
-		"last_login_ip" : s.ctx.Input.IP(),
+		"last_login_ip":   s.ctx.Input.IP(),
 		"update_time":     timeFormat,
 	}
 
@@ -227,3 +227,4 @@ func (s *UserService) defaultField(user *models.UserModel) {
 	user.UpdateTime = timeFormat
 	user.Status = constants.UserStatusActive
 }
+

@@ -25,4 +25,6 @@ var (
 	ErrPasswordLength          = &ErrMsg{Code: 3000001, Msg: "请输入6~20位的用户密码~"}
 	ErrInputUsernameOrPassword = &ErrMsg{Code: 3000001, Msg: "用户名或者密码错误~"}
 	ErrPasswordErr             = &ErrMsg{Code: 3000001, Msg: "请输入6~用户名或密码错误~"}
+
+	ErrRoleNotExists = &ErrMsg{Code: 3001001, Msg: "角色不存在"}
 )

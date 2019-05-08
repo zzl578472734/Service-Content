@@ -76,3 +76,4 @@ func (c *UserController) Search() {
 	service := services.NewUserService(c.Ctx)
 	service.Search(param)
 }
+
