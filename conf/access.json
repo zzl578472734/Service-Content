@@ -3,6 +3,10 @@
   "UserController/Detail" : 100002,
   "UserController/Search" : 100003,
   "UserController/Insert" : 100004,
-  "UserController/Login" : 100005
+  "UserController/Login" : 100005,
+
+
+  "AdminController/Login" : 200001,
+  "AdminController/Insert" : 200002
 
 }

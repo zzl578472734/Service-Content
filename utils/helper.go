@@ -18,3 +18,27 @@ func IntRange(number, min, max int) bool {
 	}
 	return true
 }
+
+/**
+ * 处理分页
+ */
+func FilterPage(param int)  int{
+	var page = 0
+	if param < page{
+		return page
+	}
+	return param
+}
+
+/**
+ * 处理分页大小
+ */
+func FilterPageSize(param int)  int{
+	var minPageSize = 0
+	var maxPageSize = 100000
+	var defaultPageSize  = 10
+	if param < minPageSize || param > maxPageSize{
+		param = defaultPageSize
+	}
+	return param
+}

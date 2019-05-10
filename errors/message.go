@@ -26,5 +26,12 @@ var (
 	ErrInputUsernameOrPassword = &ErrMsg{Code: 3000001, Msg: "用户名或者密码错误~"}
 	ErrPasswordErr             = &ErrMsg{Code: 3000001, Msg: "请输入6~用户名或密码错误~"}
 
+	ErrInputAccountOrPassword = &ErrMsg{Code: 3000001, Msg: "用户名或者密码错误~"}
+	ErrAdminNotExist            = &ErrMsg{Code: 3000001, Msg: "管理员不存在~"}
+	ErrAdminIsExist            = &ErrMsg{Code: 3000001, Msg: "管理员已经存在~"}
+	ErrAdminStatusErr = &ErrMsg{Code: 3000001, Msg: "账号被冻结~"}
+	ErrAdminAccountErr = &ErrMsg{Code: 3000001, Msg: "账号信息不合法~"}
+	ErrAdminPasswordErr = &ErrMsg{Code: 3000001, Msg: "密码设置不合法~"}
+
 	ErrRoleNotExists = &ErrMsg{Code: 3001001, Msg: "角色不存在"}
 )

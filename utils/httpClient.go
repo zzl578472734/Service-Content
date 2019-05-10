@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"github.com/astaxie/beego"
 )
 
 type HttpRequest struct {
@@ -87,9 +86,6 @@ func doRequest(param *http.Request) ([]byte, error) {
 	if err != nil {
 		log.Printf("utils.httpClient.doRequest,doRequest,ioutil.ReadAll error,detail %s", err)
 		return nil, err
-	}
-	if beego.AppConfig.String("runmode") != beego.PROD{
-		log.Printf("utils.httpClient.doRequest,doRequest, response  %s", string(body))
 	}
 	return body, nil
 }

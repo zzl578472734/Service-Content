@@ -5,10 +5,10 @@ type DefaultListParam struct {
 	PageSize int `json:"page_size"`
 }
 
-type DefaultQueryParam struct {
+type DefaultIdQueryParam struct {
 	Id int64 `json:"id"`
 }
 
-type DefaultStatusParam struct {
+type DefaultStatusQueryParam struct {
 	Status int8 `json:"status"`
 }

@@ -38,6 +38,8 @@ func InitDB() {
 
 	orm.RegisterModel(
 		new(UserModel),
+		new(AdminModel),
+		new(RoleModel),
 	)
 
 	// 判断是否是生产环境，打印对应的sql

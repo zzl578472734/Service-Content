@@ -3,6 +3,7 @@ package controllers
 import (
 	"Service-Content/constants"
 	"Service-Content/errors"
+	"Service-Content/services"
 	"crypto/sha512"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -15,10 +16,10 @@ import (
 
 var (
 	allowController = map[string][]funcFilter{
-		"UserController/*": {AppAuth},
+		"UserController/*":      {AppAuth},
 		"UserController/Insert": emptyFilterFuncSlice,
 	}
-	emptyFilterFuncSlice   []funcFilter = nil
+	emptyFilterFuncSlice                     []funcFilter = nil
 	platformConf, accessConf, permissionConf config.Configer
 )
 
@@ -70,6 +71,31 @@ func filterPrepare(c *BaseController) {
 	}
 }
 
+func AdminAuth(c *BaseController) {
+	request := c.Ctx.Input.GetData(ApiRequestBody).(*ApiRequestParam)
+
+	// 获取请求的用户信息数据
+	if request.UserId <= constants.DefaultZero {
+		c.ApiErrorReturn(errors.ErrParam)
+	}
+
+	service := services.NewAdminService(c.Ctx)
+	admin, errMsg := service.GetAdmin(request.UserId)
+	if errMsg != nil {
+		c.ApiErrorReturn(errMsg)
+	}
+
+	if admin == nil || admin.Id <= constants.DefaultZero {
+		c.ApiErrorReturn(errors.ErrQueryRecordNotExists)
+	}
+
+	if admin.Status != constants.AdminStatusSuccess {
+		c.ApiErrorReturn(errors.ErrAdminStatusErr)
+	}
+
+	c.Ctx.Input.SetData("admin", admin)
+}
+
 func AppAuth(c *BaseController) {
 	request := c.Ctx.Input.GetData(ApiRequestBody).(*ApiRequestParam)
 
@@ -78,7 +104,6 @@ func AppAuth(c *BaseController) {
 	if serviceLocalTimestamps.Sub(clientLocalTimestamps) > constants.DefaultRequestMaxTimestamps ||
 		serviceLocalTimestamps.Sub(clientLocalTimestamps) < constants.DefaultRequestMinTimestamps {
 		c.ApiErrorReturn(errors.ErrRequestTimeout)
-		return
 	}
 
 	if request.AppId == constants.DefaultEmptyString ||

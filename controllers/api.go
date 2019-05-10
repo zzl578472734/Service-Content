@@ -13,6 +13,9 @@ var (
 		"UserController/Login":  UserLoginAdapter,
 		"UserController/Insert": UserInsertAdapter,
 		"UserController/Search": UserSearchAdapter,
+
+		"AdminController/Login": AdminLoginAdapter,
+		"AdminController/Insert": AdminParamAdapter,
 	}
 )
 
@@ -33,7 +36,7 @@ func getApiRequestAdapter(c *BaseController) interface{} {
 }
 
 func DefaultQueryParamAdapter() interface{} {
-	return new(vars.DefaultQueryParam)
+	return new(vars.DefaultIdQueryParam)
 }
 
 
@@ -47,4 +50,12 @@ func UserInsertAdapter() interface{} {
 
 func UserLoginAdapter() interface{} {
 	return new(vars.UserLoginParam)
+}
+
+func AdminLoginAdapter() interface{} {
+	return new(vars.AdminLoginParam)
+}
+
+func AdminParamAdapter() interface{} {
+	return new(vars.AdminParam)
 }

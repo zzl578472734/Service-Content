@@ -10,8 +10,11 @@ type UserController struct {
 	BaseController
 }
 
+/**
+ *
+ */
 func (c *UserController) Detail() {
-	data, err := c.GetRequestParam().(*vars.DefaultQueryParam)
+	data, err := c.GetRequestParam().(*vars.DefaultIdQueryParam)
 	if !err {
 		c.ApiErrorReturn(errors.ErrParam)
 		return
@@ -28,6 +31,9 @@ func (c *UserController) Detail() {
 	return
 }
 
+/**
+ *
+ */
 func (c *UserController) Login() {
 	param, err := c.GetRequestParam().(*vars.UserLoginParam)
 

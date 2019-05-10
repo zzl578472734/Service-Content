@@ -25,6 +25,9 @@ func (m *RoleModel) TableName() string {
 	return TableName(constants.RoleTableName)
 }
 
+/**
+ * 根据id获取角色信息
+ */
 func (m *RoleModel) GetById(id int64) (*RoleModel, error) {
 	query := m.O.QueryTable(m.TableName())
 
@@ -36,4 +39,33 @@ func (m *RoleModel) GetById(id int64) (*RoleModel, error) {
 		return nil, err
 	}
 	return role, nil
+}
+
+/**
+ * 获取列表信息
+ */
+func (m *RoleModel) List(filter map[string]interface{}, page,pageSize int)  ([]*RoleModel, int64,error){
+	query := m.O.QueryTable(m.TableName())
+
+	if len(filter) > constants.DefaultZero{
+		for key,value := range filter{
+			query = query.Filter(key, value)
+		}
+	}
+
+	total,err := query.Count()
+	if ormErr(err) != nil{
+		logs.Error(constants.DefaultErrorTemplate, "RoleModel.List", "query.Count", err)
+		return nil,constants.DefaultZero,err
+	}
+
+	list := make( []*RoleModel, constants.DefaultZero)
+
+	query = query.Limit(pageSize).Offset((page - 1) * pageSize)
+	if _,err = query.All(&list); ormErr(err) != nil{
+		logs.Error(constants.DefaultErrorTemplate, "RoleModel.List", "query.All", err)
+		return nil,constants.DefaultZero,err
+	}
+
+	return list,total,nil
 }
