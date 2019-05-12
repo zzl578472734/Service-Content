@@ -3,6 +3,8 @@ package constants
 const (
 	AdminTableName = "admin"
 
+	AdminSaltLength = 8
+
 	AdminCacheGetAdmin = "service_content_get_admin_"
 
 	AdminStatusDefault = 2

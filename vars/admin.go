@@ -10,7 +10,7 @@ type AdminParam struct {
 	Password string `json:"password"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
-	Username string `json:"username"`
+	Name     string `json:"name"`
 	RoleId   int64  `json:"role_id"`
 }
 

@@ -18,6 +18,11 @@ var (
 	allowController = map[string][]funcFilter{
 		"UserController/*":      {AppAuth},
 		"UserController/Insert": emptyFilterFuncSlice,
+		"MaterialController/*": {AppAuth},
+
+		"AdminController/Login":      {AppAuth},
+		"AdminController/*":      {AppAuth, AdminAuth},
+
 	}
 	emptyFilterFuncSlice                     []funcFilter = nil
 	platformConf, accessConf, permissionConf config.Configer

@@ -3,6 +3,7 @@ package utils
 import (
 	"Service-Content/constants"
 	"time"
+	"math/rand"
 )
 
 func TimeFormat(t time.Time) string {
@@ -41,4 +42,26 @@ func FilterPageSize(param int)  int{
 		param = defaultPageSize
 	}
 	return param
+}
+
+/**
+ * 生成随机字符串
+ */
+func  GetRandomString(length int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	randStr := make([]rune, length)
+	for i := range randStr {
+		randStr[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(randStr)
+}
+
+/**
+ * 验证数字number是小于min
+ */
+func IntMin(number, min int) bool {
+	if number < min {
+		return false
+	}
+	return true
 }

@@ -1,10 +1,9 @@
 package models
 
 import (
-	constants2 "Service-Content/constants"
-	"Service-Content/thirdparty/wechat/constants"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
+	"Service-Content/constants"
 )
 
 type WxMaterialModel struct {
@@ -34,14 +33,14 @@ func NewWxMaterialModel() *WxMaterialModel {
 }
 
 func (m *WxMaterialModel) TableName() string {
-	return TableName(constants.MaterialTableNmae)
+	return TableName(constants.WXMaterialTableNmae)
 }
 
 func (m *WxMaterialModel) Insert(param *WxMaterialModel) (int64, error) {
 	id, err := m.O.Insert(param)
 	if ormErr(err) != nil {
-		logs.Error(constants2.DefaultErrorTemplate, "WxMaterialModel.Insert", "Insert", err)
-		return constants2.DefaultZero, err
+		logs.Error(constants.DefaultErrorTemplate, "WxMaterialModel.Insert", "Insert", err)
+		return constants.DefaultZero, err
 	}
 	return id, nil
 }
@@ -49,24 +48,24 @@ func (m *WxMaterialModel) Insert(param *WxMaterialModel) (int64, error) {
 func (m *WxMaterialModel) List(param map[string]interface{}, page, pageSize int) ([]*WxMaterialModel, int64, error) {
 	query := m.O.QueryTable(m.TableName())
 
-	if len(param) > constants2.DefaultZero {
+	if len(param) > constants.DefaultZero {
 		for key, value := range param {
 			query = query.Filter(key, value)
 		}
 	}
 
-	count, err := query.Count()
+	total, err := query.Count()
 	if err != nil {
-		logs.Error(constants2.DefaultErrorTemplate, "WxMaterialModel.List", "query.Count", err)
-		return nil, constants2.DefaultZero, err
+		logs.Error(constants.DefaultErrorTemplate, "WxMaterialModel.List", "query.Count", err)
+		return nil, constants.DefaultZero, err
 	}
 
-	list := make([]*WxMaterialModel, constants2.DefaultZero)
+	list := make([]*WxMaterialModel, constants.DefaultZero)
 
 	query = query.Limit(pageSize).Offset((page - 1) * pageSize)
 	if _, err = query.All(&list); ormErr(err) != nil {
-		logs.Error(constants2.DefaultErrorTemplate, "WxMaterialModel.List", "query.All", err)
-		return nil, constants2.DefaultZero, err
+		logs.Error(constants.DefaultErrorTemplate, "WxMaterialModel.List", "query.All", err)
+		return nil, constants.DefaultZero, err
 	}
-	return list, count, nil
+	return list, total, nil
 }

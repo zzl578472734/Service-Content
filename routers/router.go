@@ -15,13 +15,20 @@ func init() {
 
 	// 角色模块
 	initRoleRouter()
+
+	// 素材管理
+	initMaterialRouter()
 }
+
 
 func initAdminRouter()  {
 
 	ns := beego.NewNamespace("/admin",
 		beego.NSRouter("/login", new(controllers.AdminController), "post:Login"),
 		beego.NSRouter("/insert", new(controllers.AdminController), "post:Insert"),
+		beego.NSRouter("/active", new(controllers.AdminController), "post:Active"),
+		beego.NSRouter("/disable", new(controllers.AdminController), "post:Disable"),
+		beego.NSRouter("/modifyPassword", new(controllers.AdminController), "post:ModifyPassword"),
 	)
 	beego.AddNamespace(ns)
 }
@@ -39,11 +46,13 @@ func initUserRouter() {
 
 func initRoleRouter() {
 
-	ns := beego.NewNamespace("/role",
-		beego.NSRouter("/list", new(controllers.RoleController), "post:List"),
-		beego.NSRouter("/insert", new(controllers.RoleController), "post:Insert"),
+}
+
+func initMaterialRouter()  {
+
+	ns := beego.NewNamespace("/material",
+		beego.NSRouter("/list", new(controllers.MaterialController), "post:List"),
 	)
 
 	beego.AddNamespace(ns)
 }
-

@@ -1,15 +1,14 @@
 package services
 
 import (
-	constants2 "Service-Content/constants"
-	"Service-Content/thirdparty/wechat/constants"
-	"Service-Content/utils/redisclient"
 	"fmt"
 	"github.com/astaxie/beego"
-	"Content-Admin/utils"
 	"encoding/json"
 	"Service-Content/thirdparty/wechat/vars"
 	"github.com/astaxie/beego/logs"
+	"Service-Content/utils"
+	"Service-Content/thirdparty/wechat/constants"
+	"Service-Content/utils/redisclient"
 )
 
 type BaseService struct {
@@ -20,16 +19,11 @@ var (
 	appSecret = beego.AppConfig.String("wechat.appSecret")
 )
 
-func (s *BaseService) Request(url string, data interface{}) {
+func getAccessToken() string{
 
-}
-
-func (s *BaseService) getAccessToken() string{
-
-	cacheKey := constants.WechatAccessToken
 	var accessToken string
-	err := redisclient.GetCache(cacheKey, accessToken)
-	if err == nil && accessToken != constants2.DefaultEmptyString {
+	err := redisclient.GetCache(constants.WechatAccessToken, accessToken)
+	if err == nil && accessToken != constants.DefaultEmptyString {
 		return accessToken
 	}
 
@@ -39,16 +33,22 @@ func (s *BaseService) getAccessToken() string{
 	}
 	resp, err := utils.HttpGet(option)
 	if err != nil{
-		return constants2.DefaultEmptyString
+		return constants.DefaultEmptyString
 	}
 	WXAccessToken := new(vars.WXAccessTokenReturn)
 	err = json.Unmarshal(resp.Body, WXAccessToken)
 	if err != nil{
-		logs.Info(constants2.DefaultErrorTemplate, "BaseService.getAccessToken", "json.Unmarshal", err)
-		return constants2.DefaultEmptyString
+		logs.Error(constants.DefaultErrorTemplate, "BaseService.getAccessToken", "json.Unmarshal", err)
+		return constants.DefaultEmptyString
+	}
+	if WXAccessToken != nil && WXAccessToken.Errcode > constants.DefaultEmptyZero {
+		// 出现错误
+		logs.Error(constants.DefaultErrorTemplate, "BaseService.getAccessToken", "json.Unmarshal", string(resp.Body))
+		return constants.DefaultEmptyString
 	}
 
-	redisclient.SetCache(cacheKey, WXAccessToken.ExpireIn)
+	redisclient.SetCache(constants.WechatAccessToken, WXAccessToken.ExpireIn)
 
 	return WXAccessToken.AccessToken
 }
+

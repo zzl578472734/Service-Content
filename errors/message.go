@@ -29,7 +29,8 @@ var (
 	ErrInputAccountOrPassword = &ErrMsg{Code: 3000001, Msg: "用户名或者密码错误~"}
 	ErrAdminNotExist            = &ErrMsg{Code: 3000001, Msg: "管理员不存在~"}
 	ErrAdminIsExist            = &ErrMsg{Code: 3000001, Msg: "管理员已经存在~"}
-	ErrAdminStatusErr = &ErrMsg{Code: 3000001, Msg: "账号被冻结~"}
+	ErrAdminIsActive            = &ErrMsg{Code: 3000001, Msg: "管理员已经激活~"}
+	ErrAdminStatusErr = &ErrMsg{Code: 3000001, Msg: "账号已经被冻结~"}
 	ErrAdminAccountErr = &ErrMsg{Code: 3000001, Msg: "账号信息不合法~"}
 	ErrAdminPasswordErr = &ErrMsg{Code: 3000001, Msg: "密码设置不合法~"}
 

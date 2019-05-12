@@ -7,6 +7,10 @@
 
 
   "AdminController/Login" : 200001,
-  "AdminController/Insert" : 200002
+  "AdminController/Insert" : 200002,
+  "AdminController/Active" : 200003,
+  "AdminController/Disable" : 200004,
+  "AdminController/ModifyPassword" : 200005,
 
+  "MaterialController/List" : 300001
 }

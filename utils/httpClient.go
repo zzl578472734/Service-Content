@@ -25,9 +25,18 @@ func HttpGet(param *HttpRequest) (*HttpResponse, error){
 		return nil, err
 	}
 
+	// 设置请求头信息
 	if len(param.Headers) > 0 {
 		for key, value := range param.Headers {
 			request.Header.Set(key, value)
+		}
+	}
+
+	// 设置请求的url参数
+	if len(param.Param) > 0{
+		query := request.URL.Query()
+		for key,value := range param.Param{
+			query.Add(key,value)
 		}
 	}
 

@@ -130,7 +130,7 @@ func (s *AdminService) GetMenuByRoleId(roleId int64) ([]*models.MenuModel, *erro
 /**
  * 后台登录
  */
-func (s *AdminService) Login(param *vars.AdminLoginParam) (*models.AdminModel, *errors.ErrMsg) {
+func (s *AdminService) Login(param *vars.AdminLoginParam) (map[string]interface{}, *errors.ErrMsg) {
 	errMsg := s.filterAdminLogin(param)
 	if errMsg != nil {
 		return nil, errMsg
@@ -142,8 +142,11 @@ func (s *AdminService) Login(param *vars.AdminLoginParam) (*models.AdminModel, *
 		return nil, errors.ErrQueryError
 	}
 	if admin == nil ||
-		admin.Status != constants.AdminStatusSuccess {
+		admin.Id <= constants.DefaultZero {
 		return nil, errors.ErrInputAccountOrPassword
+	}
+	if admin.Status != constants.AdminStatusSuccess{
+		return nil,errors.ErrAdminStatusErr
 	}
 
 	summary := fmt.Sprintf("%s%s", param.Password, admin.Salt)
@@ -168,7 +171,21 @@ func (s *AdminService) Login(param *vars.AdminLoginParam) (*models.AdminModel, *
 		return nil, errors.ErrSysBusy
 	}
 
-	return admin, nil
+	data := map[string]interface{}{
+		"id": admin.Id,
+		"account": admin.Account,
+		"name": admin.Name,
+		"phone": admin.Phone,
+		"email": admin.Email,
+		"role_id": admin.RoleId,
+		"status": admin.Status,
+		"last_login_ip": admin.LastLoginIp,
+		"last_login_time": admin.LastLoginTime,
+		"create_time": admin.CreateTime,
+		"update_time": admin.UpdateTime,
+	}
+
+	return data, nil
 }
 
 /**
@@ -227,10 +244,19 @@ func (s *AdminService) Insert(param *vars.AdminParam) (int64, *errors.ErrMsg) {
 		return constants.DefaultZero, errors.ErrRoleNotExists
 	}
 
+	salt := utils.GetRandomString(constants.AdminSaltLength)
+	summary := fmt.Sprintf("%s%s", param.Password, salt)
+	password := s.getEncryptPassword(summary)
+
 	data := &models.AdminModel{
 		Account:  param.Account,
-		Password: param.Password,
+		Password: password,
 		RoleId:   param.RoleId,
+		Salt: salt,
+		Email: param.Email,
+		Phone: param.Phone,
+		Name: param.Name,
+		LastLoginIp: s.ctx.Input.IP(),
 	}
 
 	s.defaultField(data)
@@ -288,11 +314,15 @@ func (s *AdminService) Active(id int64) (int64, *errors.ErrMsg) {
 	}
 
 	if admin == nil ||
-		admin.Id <= constants.DefaultZero ||
-		admin.Status != constants.AdminStatusDefault {
+		admin.Id <= constants.DefaultZero {
 		return constants.DefaultZero, errors.ErrAdminNotExist
 	}
 
+	switch admin.Status {
+	case constants.AdminStatusSuccess:
+		return constants.DefaultZero, errors.ErrAdminIsActive
+	}
+	
 	filter := map[string]interface{}{
 		"id": id,
 	}

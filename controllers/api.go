@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	vars2 "Service-Content/thirdparty/wechat/vars"
 	"Service-Content/vars"
 	"fmt"
 )
@@ -14,8 +15,13 @@ var (
 		"UserController/Insert": UserInsertAdapter,
 		"UserController/Search": UserSearchAdapter,
 
-		"AdminController/Login": AdminLoginAdapter,
-		"AdminController/Insert": AdminParamAdapter,
+		"AdminController/Login":          AdminLoginAdapter,
+		"AdminController/Insert":         AdminParamAdapter,
+		"AdminController/Active":         AdminActiveAdapter,
+		"AdminController/Disable":        AdminDisableAdapter,
+		"AdminController/ModifyPassword": AdminModifyPasswordAdapter,
+
+		"MaterialController/List": BatchGetMaterialAdapter,
 	}
 )
 
@@ -31,14 +37,12 @@ func getApiRequestAdapter(c *BaseController) interface{} {
 	}
 
 	// 使用map处理
-
-	return adapter()
+	return map[string]interface{}{}
 }
 
 func DefaultQueryParamAdapter() interface{} {
 	return new(vars.DefaultIdQueryParam)
 }
-
 
 func UserSearchAdapter() interface{} {
 	return new(vars.UserSearchParam)
@@ -58,4 +62,20 @@ func AdminLoginAdapter() interface{} {
 
 func AdminParamAdapter() interface{} {
 	return new(vars.AdminParam)
+}
+
+func AdminActiveAdapter() interface{} {
+	return new(vars.DefaultIdQueryParam)
+}
+
+func AdminDisableAdapter() interface{} {
+	return new(vars.DefaultIdQueryParam)
+}
+
+func AdminModifyPasswordAdapter() interface{} {
+	return new(vars.AdminModifyPasswordParam)
+}
+
+func BatchGetMaterialAdapter() interface{} {
+	return new(vars2.BatchGetMaterialParam)
 }
